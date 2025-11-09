@@ -1,0 +1,47 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+# Función para calcular la media y la desviación estándar
+def media_desviacion_estandar(datos):
+    # Media y desviación estándar muestral
+    media = np.mean(datos)
+    desviacion_estandar = np.std(datos, ddof=1)
+    print(f"\nMedia: {media:.4f}")
+    print(f"Desviación estándar: {desviacion_estandar:.4f}")
+
+    # Límites de control LQL Y AQL
+    limite_inferior_media = media - 3 * desviacion_estandar
+    limite_superior_media = media + 3 * desviacion_estandar
+    print("\nLímites de control para la media:")
+    print(f"Límite inferior: {limite_inferior_media:.4f}")
+    print(f"Límite superior: {limite_superior_media:.4f}")
+
+    # Gráfica de control chart
+    plt.figure(figsize=(8,5))
+    plt.plot(range(1, len(datos)+1), datos, marker='o', color='b', label='Datos')
+    plt.axhline(media, color='g', linestyle='--', label='Media')
+    plt.axhline(limite_superior_media, color='r', linestyle='--', label='Límite superior (+3σ)')
+    plt.axhline(limite_inferior_media, color='r', linestyle='--', label='Límite inferior (-3σ)')
+    plt.title('Gráfica de Control - Media y Desviación Estándar')
+    plt.xlabel('Muestra')
+    plt.ylabel('Valor')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+    # Histograma
+    plt.figure(figsize=(7,4))
+    plt.hist(datos, bins='auto', color='skyblue', density=True, alpha=0.7)
+    x = np.linspace(min(datos), max(datos), 100)
+    plt.plot(x, norm.pdf(x, media, desviacion_estandar), 'r--', label='Curva Normal')
+    plt.title('Distribución de los Datos')
+    plt.xlabel('Valor')
+    plt.ylabel('Densidad')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+    return media, desviacion_estandar, limite_inferior_media, limite_superior_media
+
+#shilling 

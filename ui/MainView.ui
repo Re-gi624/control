@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1100</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QC Toolkit - Main Menu</string>
+  </property>
+
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_root">
+
+    <!-- TÍTULO -->
+    <item>
+     <widget class="QLabel" name="lblTitle">
+      <property name="text">
+       <string>&lt;b&gt;QC Toolkit&lt;/b&gt; - Análisis Estadístico</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignHCenter|Qt::AlignVCenter</set>
+      </property>
+      <property name="margin">
+       <number>10</number>
+      </property>
+     </widget>
+    </item>
+
+    <!-- LÍNEA SEPARADORA -->
+    <item>
+     <widget class="QFrame" name="lineTop">
+      <property name="frameShape">
+       <enum>QFrame::HLine</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+     </widget>
+    </item>
+
+    <!-- BLOQUE: ARCHIVO Y COLUMNA -->
+    <item>
+     <layout class="QHBoxLayout" name="hl_file_block">
+
+      <item>
+       <widget class="QPushButton" name="btnOpenFile">
+        <property name="text">
+         <string>Abrir CSV / Excel...</string>
+        </property>
+        <property name="minimumWidth">
+         <number>160</number>
+        </property>
+       </widget>
+      </item>
+
+      <item>
+       <widget class="QLabel" name="lblFileName">
+        <property name="text">
+         <string>Sin archivo cargado</string>
+        </property>
+        <property name="minimumWidth">
+         <number>200</number>
+        </property>
+       </widget>
+      </item>
+
+      <item>
+       <widget class="QLabel" name="lblColumnTitle">
+        <property name="text">
+         <string>Columna numérica:</string>
+        </property>
+        <property name="margin">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+
+      <item>
+       <widget class="QComboBox" name="cbColumn">
+        <property name="minimumWidth">
+         <number>200</number>
+        </property>
+       </widget>
+      </item>
+
+      <item>
+       <spacer name="spacer_file">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </spacer>
+      </item>
+
+     </layout>
+    </item>
+
+    <!-- LÍNEA DE SEPARACIÓN -->
+    <item>
+     <widget class="QFrame" name="lineMiddle">
+      <property name="frameShape">
+       <enum>QFrame::HLine</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+     </widget>
+    </item>
+
+    <!-- BOTONES GRANDES PARA ELEGIR ANALISIS -->
+    <item>
+     <layout class="QHBoxLayout" name="hl_analysis_buttons">
+      <item>
+       <widget class="QPushButton" name="btnMeanSD">
+        <property name="text">
+         <string>ANÁLISIS MEAN-SD</string>
+        </property>
+        <property name="minimumHeight">
+         <number>50</number>
+        </property>
+        <property name="minimumWidth">
+         <number>200</number>
+        </property>
+        <property name="styleSheet">
+         <string>font-size: 16px;</string>
+        </property>
+       </widget>
+      </item>
+
+      <item>
+       <widget class="QPushButton" name="btnSchilling">
+        <property name="text">
+         <string>ANÁLISIS SCHILLING</string>
+        </property>
+        <property name="minimumHeight">
+         <number>50</number>
+        </property>
+        <property name="minimumWidth">
+         <number>200</number>
+        </property>
+        <property name="styleSheet">
+         <string>font-size: 16px;</string>
+        </property>
+       </widget>
+      </item>
+
+      <item>
+       <spacer name="spacer_buttons">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+
+    <!-- LÍNEA DE SEPARACIÓN -->
+    <item>
+     <widget class="QFrame" name="lineBottom">
+      <property name="frameShape">
+       <enum>QFrame::HLine</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+     </widget>
+    </item>
+
+    <!-- STACKED WIDGET (VISTAS DINÁMICAS) -->
+    <item>
+     <widget class="QStackedWidget" name="stackedViews">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+
+      <!-- Placeholder: Pantalla inicial -->
+      <widget class="QWidget" name="pageWelcome">
+       <layout class="QVBoxLayout">
+        <item>
+         <widget class="QLabel">
+          <property name="text">
+           <string>Selecciona un análisis para comenzar</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="margin">
+           <number>50</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+
+      <!-- Cuando agregues las vistas MeanSD y Schilling se insertarán aquí -->
+    </widget>
+    </item>
+
+   </layout>
+  </widget>
+
+  <!-- STATUS BAR -->
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+
+ <resources/>
+ <connections/>
+</ui>

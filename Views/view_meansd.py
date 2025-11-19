@@ -1,4 +1,4 @@
-# views/view_meansd.py
+# Views/view_meansd.py
 import os
 import numpy as np
 import pandas as pd
@@ -6,103 +6,157 @@ from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QMessageBox
 
 from widgets.mplwidget import MplWidget
-from Logic.mean_sd import mean_sd_stats, plot_meansd_series, plot_hist
+from Logic.xbar_s import xbar_s_analysis
 
 
 class MeanSDView(QtWidgets.QWidget):
+
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        # Cargar interfaz
         uic.loadUi(os.path.join("ui", "MeanSDView.ui"), self)
 
-        # Estado interno
         self.df = None
-        self.column_name = None
+        self.numeric_df = None
 
-        # Embeder canvases en los placeholders
-        self.canvas_chart = MplWidget(self.plotMeanSD)
-        self._embed(self.plotMeanSD, self.canvas_chart)
+        # Canvases
+        self.canvas_xbar = MplWidget(self.plotMeanSD)
+        self._embed(self.plotMeanSD, self.canvas_xbar)
 
-        self.canvas_hist = MplWidget(self.histMeanSD)
-        self._embed(self.histMeanSD, self.canvas_hist)
+        self.canvas_s = MplWidget(self.histMeanSD)
+        self._embed(self.histMeanSD, self.canvas_s)
 
-        # Conectar botón
-        self.btnCalcMeanSD.clicked.connect(self.run_meansd)
+        self.btnCalcMeanSD.clicked.connect(self.run_xbar_s)
 
-    # ===============================================================
-    # MÉTODOS DE SINCRONIZACIÓN CON EL MAINWINDOW
-    # ===============================================================
-
-    def set_data(self, df: pd.DataFrame, column_name: str):
-        """Recibe datos desde MainWindow."""
-        self.df = df
-        self.column_name = column_name
-
-    def clear_data(self):
-        """Reset cuando no hay archivo cargado."""
-        self.df = None
-        self.column_name = None
-        self.tblMeanSD.clear()
-        self.canvas_chart.clear()
-        self.canvas_hist.clear()
-
-    def on_activated(self):
-        """
-        Se llama cuando el usuario cambia a la pestaña Mean-SD.
-        Útil si algún día quieres refrescar algo automáticamente.
-        """
-        pass
-
-    # ===============================================================
-    # UTILIDAD: EMBEBER CANVAS
-    # ===============================================================
-
+    # --------------------------------------------------------------------
     def _embed(self, placeholder, canvas):
         layout = QtWidgets.QVBoxLayout(placeholder)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(canvas)
 
-    # ===============================================================
-    # BOTÓN PRINCIPAL
-    # ===============================================================
+    # --------------------------------------------------------------------
+    def set_data(self, df: pd.DataFrame, _column_name: str):
+        """
+        Procesa datos asegurando que TODO esté convertido a float
+        y que la columna SUBGROUP no entre en el cálculo.
+        """
+        self.df = df
 
-    def run_meansd(self):
-        """Ejecuta el cálculo total de Mean-SD."""
-        if self.df is None or self.column_name is None:
-            QMessageBox.warning(self, "Atención",
-                "Primero carga un archivo y selecciona una columna numérica."
+        # 1. Convertir todas las columnas a número (sanitización completa)
+        numeric_df = df.apply(pd.to_numeric, errors="coerce")
+
+        # 2. Eliminar columna SUBGROUP explícitamente
+        for col in list(numeric_df.columns):
+            name = str(col).strip().upper()
+            if name in ("SUBGROUP", "SUBGRUPO", "SUBGROUPS"):
+                numeric_df.drop(columns=[col], inplace=True)
+
+        # 3. Eliminar columnas totalmente vacías
+        numeric_df = numeric_df.dropna(axis=1, how="all")
+
+        # 4. Asegurar float REAL para cálculos
+        numeric_df = numeric_df.astype(float)
+
+        self.numeric_df = numeric_df
+
+    # --------------------------------------------------------------------
+    def clear_data(self):
+        self.df = None
+        self.numeric_df = None
+        self.tblMeanSD.clear()
+        self.canvas_xbar.clear()
+        self.canvas_s.clear()
+
+    def on_activated(self):
+        pass
+
+    # --------------------------------------------------------------------
+    def run_xbar_s(self):
+        if self.numeric_df is None or self.numeric_df.empty:
+            QMessageBox.warning(
+                self, "Datos insuficientes",
+                "Carga un archivo con varias columnas numéricas."
             )
             return
 
-        # Obtener datos
-        x = self.df[self.column_name].dropna().values
+        if self.numeric_df.shape[1] < 2:
+            QMessageBox.warning(
+                self, "Subgrupos inválidos",
+                "Se necesitan al menos 2 columnas numéricas (tamaño del subgrupo >= 2)."
+            )
+            return
 
         try:
-            df_stats = mean_sd_stats(x)
+            result = xbar_s_analysis(self.numeric_df)
+            print("\n=== DATOS QUE ESTÁ LEYENDO PARA CALCULAR ===")
+            print(self.numeric_df.head(20))
+
+
         except Exception as e:
             QMessageBox.critical(self, "Error en cálculo", str(e))
             return
 
-        # Mostrar tabla
-        self._fill_table(self.tblMeanSD, df_stats)
+        self._fill_table(self.tblMeanSD, result["summary"])
+        self._plot_xbar(result)
+        self._plot_s(result)
 
-        # Control chart
-        self.canvas_chart.clear()
-        ax1 = self.canvas_chart.add_axes()
-        plot_meansd_series(ax1, x)
-        self.canvas_chart.draw()
+    # --------------------------------------------------------------------
+    # GRÁFICO X-BAR FINAL
+    # --------------------------------------------------------------------
+    def _plot_xbar(self, r):
+        self.canvas_xbar.clear()
+        ax = self.canvas_xbar.add_axes()
 
-        # Histograma
-        self.canvas_hist.clear()
-        ax2 = self.canvas_hist.add_axes()
-        plot_hist(ax2, x)
-        self.canvas_hist.draw()
+        x = np.arange(1, len(r["xbar_i"]) + 1)
+        y = r["xbar_i"]
 
-    # ===============================================================
-    # UTILIDAD: LLENAR TABLA
-    # ===============================================================
+        ax.plot(x, y, marker="o", linestyle="-", label="X̄_i")
 
+        ax.axhline(r["ucl_x"], color="red", linestyle="--",
+                   label=f"UCL_X = {r['ucl_x']:.4f}")
+        ax.axhline(r["cl_x"], color="green", linestyle="--",
+                   label=f"CL_X = {r['cl_x']:.4f}")
+        ax.axhline(r["lcl_x"], color="red", linestyle="--",
+                   label=f"LCL_X = {r['lcl_x']:.4f}")
+
+        ax.set_title("Gráfico X̄ (medias por subgrupo)")
+        ax.set_xlabel("Subgrupo")
+        ax.set_ylabel("Media X̄_i")
+        ax.grid(True)
+        ax.legend()
+
+        self.canvas_xbar.draw()
+
+    # --------------------------------------------------------------------
+    # GRÁFICO S FINAL
+    # --------------------------------------------------------------------
+    def _plot_s(self, r):
+        self.canvas_s.clear()
+        ax = self.canvas_s.add_axes()
+
+        x = np.arange(1, len(r["s_i"]) + 1)
+        y = r["s_i"]
+
+        ax.plot(x, y, marker="o", linestyle="-", label="S_i")
+
+        ax.axhline(r["ucl_s"], color="red", linestyle="--",
+                   label=f"UCL_S = {r['ucl_s']:.4f}")
+        ax.axhline(r["cl_s"], color="green", linestyle="--",
+                   label=f"CL_S = {r['cl_s']:.4f}")
+        ax.axhline(r["lcl_s"], color="red", linestyle="--",
+                   label=f"LCL_S = {r['lcl_s']:.4f}")
+
+        ax.set_title("Gráfico S (desv. estándar por subgrupo)")
+        ax.set_xlabel("Subgrupo")
+        ax.set_ylabel("S_i")
+        ax.grid(True)
+        ax.legend()
+
+        self.canvas_s.draw()
+
+    # --------------------------------------------------------------------
+    # TABLA RESUMEN
+    # --------------------------------------------------------------------
     def _fill_table(self, table_widget, df: pd.DataFrame):
         table_widget.clear()
         table_widget.setColumnCount(df.shape[1])
@@ -111,8 +165,8 @@ class MeanSDView(QtWidgets.QWidget):
 
         for i in range(df.shape[0]):
             for j in range(df.shape[1]):
-                value = str(df.iat[i, j])
-                table_widget.setItem(i, j, QtWidgets.QTableWidgetItem(value))
+                val = str(df.iat[i, j])
+                table_widget.setItem(i, j, QtWidgets.QTableWidgetItem(val))
 
         table_widget.resizeColumnsToContents()
         table_widget.resizeRowsToContents()

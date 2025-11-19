@@ -3,7 +3,7 @@ import os
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QMessageBox
 
-from widgets.mplwidget import MplWidget
+from Widgets.mplwidget import MplWidget
 from Logic.schilling import calculate_schilling_plan
 
 

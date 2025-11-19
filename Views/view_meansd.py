@@ -5,7 +5,7 @@ import pandas as pd
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QMessageBox
 
-from widgets.mplwidget import MplWidget
+from Widgets.mplwidget import MplWidget
 from Logic.xbar_s import xbar_s_analysis
 
 

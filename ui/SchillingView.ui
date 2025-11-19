@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SchillingView</class>
+ <widget class="QWidget" name="SchillingView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1000</width>
+    <height>650</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Schilling View</string>
+  </property>
+
+  <layout class="QVBoxLayout" name="verticalLayout_root">
+
+   <!-- TÍTULO -->
+   <item>
+    <widget class="QLabel" name="lblTitleSchilling">
+     <property name="text">
+      <string>&lt;b&gt;Análisis Schilling&lt;/b&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignHCenter|Qt::AlignVCenter</set>
+     </property>
+     <property name="margin">
+      <number>5</number>
+     </property>
+    </widget>
+   </item>
+
+   <!-- FILA: CARGAR TABLA SCHILLING -->
+   <item>
+    <layout class="QHBoxLayout" name="hl_table">
+     <item>
+      <widget class="QPushButton" name="btnLoadSchillingTable">
+       <property name="text">
+        <string>Cargar tabla Schilling...</string>
+       </property>
+       <property name="minimumWidth">
+        <number>180</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lblSchillingTable">
+       <property name="text">
+        <string>Tabla: no cargada</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="spacer_table">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+
+   <!-- FILA: PARÁMETROS AQL / LQL / N / LTPD -->
+   <item>
+    <layout class="QHBoxLayout" name="hl_params">
+
+     <!-- AQL -->
+     <item>
+      <widget class="QLabel" name="lblAQL">
+       <property name="text">
+        <string>AQL:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="edAQL">
+       <property name="placeholderText">
+        <string>0.01</string>
+       </property>
+       <property name="minimumWidth">
+        <number>80</number>
+       </property>
+      </widget>
+     </item>
+
+     <!-- LQL -->
+     <item>
+      <widget class="QLabel" name="lblLQL">
+       <property name="text">
+        <string>LQL:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="edLQL">
+       <property name="placeholderText">
+        <string>0.05</string>
+       </property>
+       <property name="minimumWidth">
+        <number>80</number>
+       </property>
+      </widget>
+     </item>
+
+     <!-- N -->
+     <item>
+      <widget class="QLabel" name="lblN">
+       <property name="text">
+        <string>N:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="edN">
+       <property name="placeholderText">
+        <string>p. ej. 100</string>
+       </property>
+       <property name="minimumWidth">
+        <number>80</number>
+       </property>
+      </widget>
+     </item>
+
+     <!-- LTPD -->
+     <item>
+      <widget class="QLabel" name="lblLTPD">
+       <property name="text">
+        <string>LTPD:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="edLTPD">
+       <property name="placeholderText">
+        <string>p. ej. 0.1</string>
+       </property>
+       <property name="minimumWidth">
+        <number>80</number>
+       </property>
+      </widget>
+     </item>
+
+     <!-- BOTÓN -->
+     <item>
+      <widget class="QPushButton" name="btnRunSchilling">
+       <property name="text">
+        <string>Analizar Schilling</string>
+       </property>
+       <property name="minimumWidth">
+        <number>160</number>
+       </property>
+      </widget>
+     </item>
+
+     <item>
+      <spacer name="spacer_params">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+
+   <!-- TABLA DE RESULTADOS -->
+   <item>
+    <widget class="QTableWidget" name="tblSchilling">
+     <property name="minimumHeight">
+      <number>180</number>
+     </property>
+    </widget>
+   </item>
+
+   <!-- GRÁFICA -->
+   <item>
+    <layout class="QVBoxLayout" name="vl_plot_schilling">
+     <item>
+      <widget class="QLabel" name="lblPlotSch">
+       <property name="text">
+        <string>Gráfica del Análisis Schilling</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignHCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QWidget" name="plotSchilling">
+       <property name="minimumSize">
+        <size>
+         <width>400</width>
+         <height>250</height>
+        </size>
+       </property>
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+
+  </layout>
+ </widget>
+
+ <resources/>
+ <connections/>
+</ui>

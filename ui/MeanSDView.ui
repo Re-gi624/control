@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MeanSDView</class>
+ <widget class="QWidget" name="MeanSDView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1000</width>
+    <height>650</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Mean-SD View</string>
+  </property>
+
+  <layout class="QVBoxLayout" name="verticalLayout_root">
+
+   <!-- TÍTULO LOCAL -->
+   <item>
+    <widget class="QLabel" name="lblTitleMeanSD">
+     <property name="text">
+      <string>&lt;b&gt;Análisis Mean-SD&lt;/b&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignHCenter|Qt::AlignVCenter</set>
+     </property>
+     <property name="margin">
+      <number>5</number>
+     </property>
+    </widget>
+   </item>
+
+   <!-- BOTÓN CALCULAR -->
+   <item>
+    <layout class="QHBoxLayout" name="hl_controls">
+     <item>
+      <widget class="QPushButton" name="btnCalcMeanSD">
+       <property name="text">
+        <string>Calcular Mean-SD</string>
+       </property>
+       <property name="minimumWidth">
+        <number>160</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="spacer_controls">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+
+   <!-- TABLA DE RESULTADOS -->
+   <item>
+    <widget class="QTableWidget" name="tblMeanSD">
+     <property name="minimumHeight">
+      <number>150</number>
+     </property>
+    </widget>
+   </item>
+
+   <!-- ÁREA DE GRÁFICAS (2 columnas) -->
+   <item>
+    <layout class="QHBoxLayout" name="hl_plots">
+
+     <!-- Control Chart -->
+     <item>
+      <layout class="QVBoxLayout" name="vl_plot1">
+       <item>
+        <widget class="QLabel" name="lblPlotMean">
+         <property name="text">
+          <string>Control chart (Mean-SD)</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="plotMeanSD">
+         <property name="minimumSize">
+          <size>
+           <width>400</width>
+           <height>250</height>
+          </size>
+         </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+
+     <!-- Histograma -->
+     <item>
+      <layout class="QVBoxLayout" name="vl_plot2">
+       <item>
+        <widget class="QLabel" name="lblPlotHist">
+         <property name="text">
+          <string>Histograma + Normal</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="histMeanSD">
+         <property name="minimumSize">
+          <size>
+           <width>400</width>
+           <height>250</height>
+          </size>
+         </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+
+    </layout>
+   </item>
+
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

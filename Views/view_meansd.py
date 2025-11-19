@@ -88,8 +88,7 @@ class MeanSDView(QtWidgets.QWidget):
 
         try:
             result = xbar_s_analysis(self.numeric_df)
-            print("\n=== DATOS QUE ESTÁ LEYENDO PARA CALCULAR ===")
-            print(self.numeric_df.head(20))
+            
 
 
         except Exception as e:

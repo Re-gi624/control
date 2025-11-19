@@ -5,7 +5,7 @@ import pandas as pd
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QMessageBox
 
-from Widgets.mplwidget import MplWidget
+from widgets.mplwidget import MplWidget
 from Logic.schilling import calculate_schilling_plan
 
 

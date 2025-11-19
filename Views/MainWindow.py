@@ -5,8 +5,8 @@ from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
 from Services.FileLoader import load_dataframe
-#from Views.view_meansd import MeanSDView
-#from Views.view_schilling import SchillingView
+from Views.view_meansd import MeanSDView
+from Views.view_schilling import SchillingView
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -15,6 +15,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Cargar el diseño del MainWindow
         uic.loadUi(os.path.join("ui", "MainView.ui"), self)
+
+        self.mean_view = MeanSDView(parent=self)        
+        self.schilling_view = SchillingView(parent=self)  
 
         # Estado compartido
         self.df = None              # DataFrame con los datos cargados
@@ -29,8 +32,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.btnSchilling.clicked.connect(self.on_select_schilling)
 
         
-        #self.mean_view = MeanSDView(parent=self)        
-        #self.schilling_view = SchillingView(parent=self)  
 
         self.stackedViews.addWidget(self.mean_view)      
         self.stackedViews.addWidget(self.schilling_view) 

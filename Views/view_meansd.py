@@ -5,7 +5,7 @@ import pandas as pd
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QMessageBox
 
-from Widgets.mplwidget import MplWidget
+from widgets.mplwidget import MplWidget
 from Logic.mean_sd import mean_sd_stats, plot_meansd_series, plot_hist
 
 
